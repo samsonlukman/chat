@@ -1,0 +1,40 @@
+import json
+from channels.generic.websocket import WebsocketConsumer
+from asgiref.sync import async_to_sync
+from .models import ChatMessage
+
+class ChatConsumer(WebsocketConsumer):
+    def connect(self):
+        self.room_group_name = 'test'
+
+        async_to_sync(self.channel_layer.group_add)(
+            self.room_group_name,
+            self.channel_name
+        )
+
+        self.accept()
+   
+
+    def receive(self, text_data):
+        text_data_json = json.loads(text_data)
+        message = text_data_json['message']
+        user = self.scope['user']
+
+        # Save the chat message to the database
+        chat_message = ChatMessage.objects.create(user=user, message=message)
+
+        # Broadcast the message to all connected clients
+        self.send(text_data=json.dumps({
+            'type': 'chat',
+            'user': chat_message.user.username,
+            'message': chat_message.message,
+            'timestamp': chat_message.timestamp.strftime('%Y-%m-%d %H:%M:%S'),  # Format the timestamp as needed
+        }))
+
+    def chat_message(self, event):
+        message = event['message']
+
+        self.send(text_data=json.dumps({
+            'type':'chat',
+            'message':message
+        }))

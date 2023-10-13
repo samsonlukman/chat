@@ -1,0 +1,68 @@
+
+
+<h2>Login</h2>
+ {% if message %}
+ {{message}}
+ {% endif %}
+<form action="{% url 'login' %}" method="post">
+    {% csrf_token %}
+    <div class="form-group">
+        <input autofocus class="form-control" type="text" name="username" placeholder="Username" required>
+    </div>
+    <div class="form-group">
+        <input class="form-control" type="password" name="password" placeholder="Password" required>
+    </div>
+    <input class="btn btn-primary" type="submit" value="Login">
+</form>
+
+Don't have an account? <a href="{% url 'register' %}">Register here.</a>
+
+
+<style>
+    h2 {
+    font-size: 24px;
+    color: #333;
+    margin: 20px 0;
+}
+
+.form-group {
+    margin: 10px 0;
+}
+
+.form-control {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+}
+
+.form-control::placeholder {
+    color: #999;
+}
+
+.btn {
+    background-color: #007BFF;
+    color: #fff;
+    padding: 10px 20px;
+    font-size: 18px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn:hover {
+    background-color: #0056b3;
+}
+
+a {
+    color: #007BFF;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+</style>

@@ -1,5 +1,5 @@
 # django-channels-basic-chat
-
+- Youtube tutorial: https://youtu.be/SWivHeitpk0
 
 
 
